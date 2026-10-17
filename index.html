@@ -7,26 +7,15 @@
     <meta name="referrer" content="no-referrer">
     <meta name="robots" content="noindex,nofollow,noarchive">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>لوحة لك</title>
+    <title>لوحة</title>
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
   </head>
   <body>
     <main class="gallery" id="gallery">
-      <header class="art-header">
-        <span class="eyebrow">لحظة من اللون</span>
-        <h1 id="page-title">لوحة لك</h1>
-      </header>
-      <section class="art-panel" id="art-panel" aria-labelledby="page-title" hidden>
+      <section class="art-panel" id="art-panel" aria-label="لوحة متحركة" hidden>
         <figure class="art-frame" id="art-frame" aria-label="لوحة متحركة تُرسم تدريجيًا"></figure>
-        <div class="art-toolbar">
-          <p>كلّ ضربة لون، خطوة نحو اللوحة.</p>
-          <button class="secondary-button" id="restart-button" type="button" disabled>إعادة الرسم</button>
-        </div>
       </section>
-
-      <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true">جارٍ فتح اللوحة…</p>
-      <noscript><p class="noscript-note">فعّل JavaScript في متصفحك لعرض اللوحة.</p></noscript>
     </main>
   </body>
 </html>

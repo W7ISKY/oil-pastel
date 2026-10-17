@@ -2,11 +2,8 @@
 
 (() => {
   const MAGIC = "OILINK02";
-  const INVALID_LINK = "هذا الرابط غير مكتمل أو غير صالح.";
   const artPanel = document.getElementById("art-panel");
-  const restartButton = document.getElementById("restart-button");
   const artFrame = document.getElementById("art-frame");
-  const status = document.getElementById("status");
 
   let generation = 0;
   let artwork = null;
@@ -14,11 +11,6 @@
   let requestController = null;
   let keyBytes = null;
   let plaintext = null;
-
-  function setStatus(message = "", kind = "") {
-    status.textContent = message;
-    status.dataset.kind = kind;
-  }
 
   function clearImage() {
     for (const image of artFrame.querySelectorAll("img")) {
@@ -40,7 +32,6 @@
     clearImage();
     artwork = null;
     artPanel.hidden = true;
-    restartButton.disabled = true;
   }
 
   function showImage() {
@@ -74,13 +65,13 @@
     const currentGeneration = generation;
     let currentKeyBytes = null;
     let currentPlaintext = null;
-    setStatus("جارٍ فتح اللوحة…");
+    document.documentElement.dataset.state = "loading";
 
     try {
       currentKeyBytes = readKey();
       keyBytes = currentKeyBytes;
       if (!globalThis.crypto?.subtle) {
-        setStatus("هذا المتصفح لا يدعم عرض اللوحة. افتح الرابط في متصفح حديث يدعم الاتصال الآمن.", "error");
+        document.documentElement.dataset.state = "error";
         return;
       }
 
@@ -124,15 +115,13 @@
       if (plaintext === currentPlaintext) plaintext = null;
       showImage();
       artPanel.hidden = false;
-      restartButton.disabled = false;
-      setStatus();
+      document.documentElement.dataset.state = "ready";
     } catch (error) {
       if (currentGeneration !== generation || error.name === "AbortError") return;
       clearImage();
       artwork = null;
       artPanel.hidden = true;
-      restartButton.disabled = true;
-      setStatus(INVALID_LINK, "error");
+      document.documentElement.dataset.state = "error";
     } finally {
       currentKeyBytes?.fill(0);
       currentPlaintext?.fill(0);
@@ -142,7 +131,6 @@
     }
   }
 
-  restartButton.addEventListener("click", showImage);
   window.addEventListener("pagehide", clearResources);
   window.addEventListener("hashchange", openArtwork);
   window.addEventListener("pageshow", (event) => {
